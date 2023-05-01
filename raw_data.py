@@ -8,19 +8,19 @@ class Data:
         self.__history()
     
     def __calculate_ker(self):            
-        # Real cost of equity
+        # real cost of equity
         self.erp_current = round(self.__df_ke['erp'][0] * 100, 2)
         self.ker_current = round(self.__df_ke['Ker'][0] * 100, 2)
         self.ker_mean = round(self.__df_ke['Ker'].mean() * 100, 2)
         self.ker_delta = round((self.__df_ke['Ker'][0] / self.__df_ke['Ker'][1] -1) * 100, 2)
 
-        # Cost of equity (TIPS)
+        # cost of equity (TIPS)
         self.ke_tips_current = round(self.__df_ke['tips'][0] * 100, 2)
         self.ke_tips_spread_current = round(self.__df_ke['Ke_tips_spread'][0] * 100, 2)
         self.ke_tips_spread_mean = round(self.__df_ke['Ke_tips_spread'].mean() * 100, 2)
         self.ke_tips_spread_delta = round((self.__df_ke['Ke_tips_spread'][0] / self.__df_ke['Ke_tips_spread'][1] -1) * 100, 2)
 
-        # Cost of equity (expected inflation)
+        # cost of equity (expected inflation)
         self.ke_exp_inflation_current = round(self.__df_ke['Ke_exp_inflation'][0] * 100, 2)
         self.ke_exp_inflation_mean = round(self.__df_ke['Ke_exp_inflation'].mean() * 100, 2)
         self.ke_exp_inflation_delta = round((self.__df_ke['Ke_exp_inflation'][0] / self.__df_ke['Ke_exp_inflation'][1] -1) * 100, 2)
@@ -35,14 +35,14 @@ class Data:
     
     @st.cache_data
     def get_data():
-        # Pe
+        # pe
         pe = pd.read_html('https://www.multpl.com/s-p-500-pe-ratio/table/by-year')
         df_pe = pd.DataFrame(pe[0])
         df_pe['Value Value'] = df_pe['Value Value'].str.replace('estimate', '')
         df_pe['Value Value'] = pd.to_numeric(df_pe['Value Value'])
         df_pe.rename(columns = {'Value Value':'Pe'}, inplace = True)
 
-        # Earning Yield %
+        # earning yield %
         ey = pd.read_html('https://www.multpl.com/s-p-500-earnings-yield/table/by-year')
         df_ey = pd.DataFrame(ey[0])
         df_ey['Value Value'] = df_ey['Value Value'].str.replace('%', '')
@@ -50,7 +50,7 @@ class Data:
         df_ey['Value Value'] = pd.to_numeric(df_ey['Value Value']) / 100
         df_ey.rename(columns = {'Value Value':'Earning_y'}, inplace = True)
 
-        # Price to book value
+        # price to book value
         pb = pd.read_html('https://www.multpl.com/s-p-500-price-to-book/table/by-year')
         df_pb = pd.DataFrame(pb[0])
         df_pb['Value Value'] = df_pb['Value Value'].str.replace('%', '')
@@ -88,7 +88,7 @@ class Data:
         df_tips['Value Value'] = pd.to_numeric(df_tips['Value Value']) / 100
         df_tips.rename(columns = {'Value Value':'tips'}, inplace = True)
 
-        # DF ensamble
+        # df ensamble
         df_pe['price_book'] = df_pb['Price_book']
         df_pe['earning_y'] = df_ey['Earning_y']
         df_pe['real_gdp'] = df_gr['real_gdp']
@@ -97,24 +97,24 @@ class Data:
         df_pe['interest_rate'] = df_ir['interest_rate']
         df_pe['tips'] = df_tips['tips']
 
-        # Intermediary DF
+        # intermediary df
         inter_df = df_pe.head(24)
         
-        # Final DF
+        # final df
         df_ke = pd.DataFrame(columns = ['Date', 'earning_yield', 'g', 'Roe', 'gr', 'expected_inflation', 'interest_rate', 'tips', 'tips_spread'])
         df_ke['Date'] = inter_df['Date']
         df_ke['earning_yield'] = inter_df['earning_y']
         df_ke['tips'] = inter_df['tips']
         df_ke['interest_rate'] = inter_df['interest_rate']
 
-        # Adjustments
+        # adjustments
         for x in df_ke['Roe']:
             df_ke['Roe'] = inter_df['Roe'].mean()
 
         for x in df_ke['gr']:
             df_ke['gr'] = inter_df['real_gdp'].mean()
 
-        # Expected inflation
+        # expected inflation
         expected_infl = []
         t_period = 0
         for x in inter_df['inflazione']:
@@ -123,12 +123,12 @@ class Data:
             expected_infl.append(inflation)
         df_ke['expected_inflation'] = expected_infl
 
-        # Between values operations
+        # between values operations
         df_ke['g'] = df_ke['gr'] + df_ke['expected_inflation']
         df_ke['tips_spread'] = df_ke['interest_rate'] - df_ke['tips']
         df_ke['Ker'] = df_ke['earning_yield'] * (1 - (df_ke['g'] / df_ke['Roe'])) + df_ke['gr']
 
-        # Inflation adjusted erp
+        # inflation adjusted erp
         df_ke['erp'] = df_ke['Ker'] - df_ke['tips']
         
         # Ke (expected inflation)
@@ -137,10 +137,10 @@ class Data:
         # Ke (tips spread)
         df_ke['Ke_tips_spread'] = df_ke['Ker'] + df_ke['tips_spread']
         
-        # Inflation adjusted erp
+        # inflation adjusted erp
         df_ke['erp'] = df_ke['Ker'] - df_ke['tips']
 
-        # Date conversion
+        # date conversion
         d = 0
         for x in df_ke['Date']:
             df_ke['Date'][d] = df_ke['Date'][d].replace(x, x[-4:])

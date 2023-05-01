@@ -1,19 +1,16 @@
 import streamlit as st
-import yfinance as yf
 import pandas as pd
-import numpy as np
 from raw_data import Data
-from company import Company_info
 
-# Principal data
+# principal data
 data = Data()
 
-# Page architecture
+# page architecture
 header = st.container()
 chart = st.container()
 ticker_co = st.container()
 
-# Cost of equity (current & mean)
+# cost of equity (current & mean)
 with header:
     st.title('S&P 500 Cost of equity')
     
@@ -33,7 +30,7 @@ with header:
 
     st.markdown("""---""")
 
-# Cost of equity (history)
+# cost of equity (history)
 with chart:
     st.header('Historical implied real cost of equity')
     
@@ -43,7 +40,7 @@ with chart:
     maximum = data.maximum
     slides = col1.slider('', min_value=minimum, max_value=maximum, value=(minimum, maximum))
 
-    # Real cost of equity (breakdown)
+    # real cost of equity (breakdown)
     stack_ker = data.hist
     stack_ker.rename(columns={'tips': 'TIPS', 'erp': 'ERP'}, inplace=True)
     stack_ker.set_index('Date', inplace = True)
