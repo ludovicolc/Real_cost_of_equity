@@ -1,4 +1,8 @@
-# Financial tools (Web application)
+# Problem statement
+
+
+# Project's summary
+https://ludovicolc-real-cost-of-equity-details-qbq9rc.streamlit.app/
 
 ## Precisazioni
 l\'inflazione attesa viene calcolata come la media degli ultimi 5 anni, per ogni anno, dell\'inflazione effettivamente registrata')
