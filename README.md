@@ -9,7 +9,7 @@ The web application uses the methodology outlined by Marc H. Goedhart, Timothy M
 [page](https://www.mckinsey.com/business-functions/strategy-and-corporate-finance/our-insights/the-real-cost-of-equity)
 
 
-## Notes
-* The expected inflation is calculated as the average of the actual inflation recorded for each year over the last 5 years.')
-* The variation displayed under the various results represents the % delta between the current value and the last recorded value.')
-* The data used to calculate the cost of equity pertains to the S&P 500 and the US economy.')
+### Notes
+* The expected inflation is calculated as the average of the actual inflation recorded for each year over the last 5 years.
+* The variation displayed under the various results represents the % delta between the current value and the last recorded value.
+* The data used to calculate the cost of equity pertains to the S&P 500 and the US economy.
