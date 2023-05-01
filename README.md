@@ -1,4 +1,4 @@
-Link to web application: [webapp]https://ludovicolc-real-cost-of-equity-details-qbq9rc.streamlit.app/
+Link to web application: [webapp](https://ludovicolc-real-cost-of-equity-details-qbq9rc.streamlit.app/)
 
 # Problem statement
 Investors often face challenges when attempting to calculate the cost of equity for their investment portfolios. One of the main difficulties is determining the appropriate equity risk premium to use, which can have a significant impact on the calculated cost of equity. This process can be time-consuming and complicated, requiring investors to conduct extensive research and analysis of market data. As a result, there is a need for a more streamlined and automated solution that can accurately calculate the cost of equity based on reliable data sources, such as the S&P 500.
